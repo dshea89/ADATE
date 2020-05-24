@@ -61,9 +61,27 @@ cat main1.sml SEQ01.spec.sml main2.sml > main.sml
 
 ## Older Versions
 
-The most recent available version of ADATE is version 0.50. An older version of ADATE, version 0.41, is also made available for historical purposes. This includes the source code for the makespec binary and may be used to produce a build compatile with 64-bit systems in the absence of source code for makespec in version 0.50.
+The most recent available version of ADATE is version 0.50. Older versions have been provided for historical purposes.
 
-An even older version still, 0.30, has also been provided. This is a Windows build of ADATE. Special thanks to Massimo Dentico for providing me with a copy of this version, as the Windows build was unavailable via the Archive.org Wayback Machine.
+### 0.41
+
+Version 0.41 includes the source code for the makespec binary and may be used to produce a build compatile with 64-bit systems in the absence of source code for makespec in version 0.50.
+
+### 0.30
+
+Version 0.30 has also been provided. This is a Windows build of ADATE. Special thanks to Massimo Dentico for providing me with a copy of this version, as the Windows build was unavailable via the Archive.org Wayback Machine.
+
+This version requires SML/NJ to be installed on your system. You may download the latest version from the SML/NJ website:
+
+https://www.smlnj.org/
+
+As of writing, the latest version is 110.97, which may be downloaded from:
+
+http://smlnj.cs.uchicago.edu/dist/working/110.97/smlnj-110.97.msi
+
+To use this version of ADATE in Windows, you may simply run `adate.bat` from the command line after installing SML/NJ. You will then be brought into the ADATE session where subsequent commands may be run.
+
+To see an example of defining a specification file and running a session, consult the user guide `v0.30/user-manual.pdf` for more information.
 
 ## TODO
 
