@@ -1,0 +1,364 @@
+(* File: ML.grm 
+   Created: 1993-05-26
+   Modified: 1996-06-02
+*)
+
+
+%%
+%header (functor MLLrValsFun (structure Token : TOKEN) : ML_LRVALS)
+%term
+  FUN | VAL | DATATYPE | TYPE | AND | LET | IN | END | CASE | OF 
+| AS | LPAR | RPAR | VBAR 
+| ARROW | THIN_ARROW | COMMA | SEMICOLON | EQ | LESS' | PLUS | MUL 
+| DIV | MINUS | PRIME | COLON | CONS | APPEND | RAISE | EXCEPTION
+| INT of int | REAL of real | ID of string | EOF
+
+%nonterm
+  START of Ast.parse_result list
+| DEC_LIST of Ast.parse_result list
+| DEC of Ast.parse_result
+| DATATYPE_DEC_LIST of Ast.datatype_dec list
+| DATATYPE_DECS of Ast.datatype_dec list
+| DATATYPE_DEC of Ast.datatype_dec
+| TY_VAR of Ast.symbol
+| TY_PAR_LIST of Ast.symbol list
+| ALT_LIST of { 
+    constr : Ast.symbol, 
+    domain : Ast.ty_exp option 
+    } list
+| ALT of { constr : Ast.symbol, domain : Ast.ty_exp option }
+| TYPE_DEC of { 
+    ty_con : Ast.symbol, 
+    ty_pars : Ast.ty_var list,
+    ty_exp : Ast.ty_exp
+    }
+| EXP of Ast.exp
+| EXP_LIST of Ast.exp list
+| PAT of Ast.pat
+| PAT_LIST of Ast.pat list
+| FUN_DEC_LIST of Ast.dec list
+| FUN_DECS of Ast.dec list
+| FUN_DEC of Ast.dec
+| RULE of { pat : Ast.pat, exp : Ast.exp }
+| RULE_LIST of (Ast.exp_info_type, Ast.dec_info_type)Ast.rule_type list
+| TY_EXP of Ast.ty_exp
+| BASIC_TY_EXP of Ast.ty_exp
+| CART_PROD of Ast.ty_exp list
+| TY_EXP_LIST of Ast.ty_exp list
+
+%start START
+%eop EOF
+%noshift EOF
+%pos int
+%verbose
+%pure
+
+%left SEMICOLON
+%nonassoc ARROW
+%nonassoc VBAR
+%nonassoc AS
+%nonassoc RAISE
+%nonassoc LESS' EQ
+%right THIN_ARROW 
+%right CONS APPEND
+%left PLUS MINUS
+%left DIV MUL
+
+
+%name ML
+%%
+
+START : DEC_LIST ( DEC_LIST )
+
+DEC : 
+    FUN_DEC_LIST ( Ast.parsed_fun FUN_DEC_LIST )
+  | TYPE_DEC ( Ast.parsed_type TYPE_DEC )
+  | DATATYPE_DEC_LIST ( Ast.parsed_datatype DATATYPE_DEC_LIST )
+
+DEC_LIST :
+    DEC ( DEC::nil )
+  | EXCEPTION ID DEC_LIST ( DEC_LIST )
+  | DEC DEC_LIST ( DEC::DEC_LIST )
+
+DATATYPE_DEC_LIST :
+    DATATYPE DATATYPE_DECS ( DATATYPE_DECS )
+
+DATATYPE_DECS : 
+    DATATYPE_DEC ( DATATYPE_DEC :: nil )
+  | DATATYPE_DEC AND DATATYPE_DECS ( DATATYPE_DEC :: DATATYPE_DECS )
+
+DATATYPE_DEC :
+    TY_PAR_LIST ID EQ ALT_LIST ( {
+      ty_con = Ast.string_to_symbol(Ast.ty_con_sym,ID),
+      ty_pars = TY_PAR_LIST,
+      alts = ALT_LIST
+      } )
+
+TY_VAR :
+    PRIME ID ( Ast.string_to_symbol( Ast.ty_var_sym, "'" ^ ID ) )
+
+TY_PAR_LIST : 
+    LPAR TY_PAR_LIST RPAR ( TY_PAR_LIST )
+  | TY_VAR COMMA TY_PAR_LIST ( TY_VAR :: TY_PAR_LIST )
+  | TY_VAR ( TY_VAR :: nil )
+  | ( nil )
+
+ALT_LIST :
+    ALT VBAR ALT_LIST ( ALT :: ALT_LIST )
+  | ALT ( ALT :: nil )
+
+ALT :
+    ID OF TY_EXP ( { 
+      constr = Ast.string_to_symbol( Ast.func_sym, ID ),
+      domain = SOME TY_EXP
+      } )
+  | ID ( { 
+      constr = Ast.string_to_symbol( Ast.func_sym, ID ), 
+      domain = NONE 
+      } )
+
+TYPE_DEC :
+    TYPE TY_PAR_LIST ID EQ TY_EXP ( {
+      ty_con = Ast.string_to_symbol( Ast.ty_con_sym, ID ),
+      ty_pars = TY_PAR_LIST,
+      ty_exp = TY_EXP
+      } )
+
+BASIC_TY_EXP : 
+    TY_VAR ( Ast.ty_var_exp TY_VAR )
+  | ID ( 
+      Ast.ty_con_exp(
+        Ast.string_to_symbol( Ast.ty_con_sym, ID ),
+        nil) 
+      ) 
+  | LPAR TY_EXP RPAR ( TY_EXP ) (* 5 *)
+  | LPAR TY_EXP_LIST RPAR ID (* 6 *) ( 
+      Ast.ty_con_exp( 
+        Ast.string_to_symbol( Ast.ty_con_sym, ID ), 
+        TY_EXP_LIST ) 
+      )
+  | BASIC_TY_EXP ID (* 8 *) ( 
+      Ast.ty_con_exp( 
+        Ast.string_to_symbol( Ast.ty_con_sym, ID ), 
+        BASIC_TY_EXP::nil ) 
+      )
+
+TY_EXP_LIST : 
+    TY_EXP COMMA TY_EXP ( TY_EXP1::TY_EXP2::nil ) (* 9 *)
+  | TY_EXP COMMA TY_EXP_LIST ( TY_EXP::TY_EXP_LIST ) 
+
+CART_PROD : 
+    BASIC_TY_EXP MUL BASIC_TY_EXP ( 
+      BASIC_TY_EXP1::BASIC_TY_EXP2::nil 
+      )
+  | BASIC_TY_EXP MUL CART_PROD ( BASIC_TY_EXP::CART_PROD )
+
+TY_EXP : 
+    BASIC_TY_EXP (BASIC_TY_EXP)
+  | CART_PROD ( Ast.ty_con_exp(Ast.TUPLE_TY_CON,CART_PROD) )
+  | TY_EXP THIN_ARROW TY_EXP ( 
+      Ast.ty_con_exp(Ast.THIN_ARROW, TY_EXP1::TY_EXP2::nil) 
+      )
+
+FUN_DEC_LIST : 
+    FUN FUN_DECS ( FUN_DECS )
+
+FUN_DEC :
+    ID PAT EQ EXP ( {
+      func=Ast.string_to_symbol( Ast.func_sym, ID ),
+      pat=PAT,
+      exp=EXP,
+      dec_info=Ast.no_dec_info()
+      } )
+  | ID LPAR PAT COLON TY_EXP RPAR COLON TY_EXP EQ EXP ( {
+      func=Ast.string_to_symbol( Ast.func_sym, ID ),
+      pat=PAT,
+      exp=EXP,
+      dec_info= 
+        let val TE = 
+          Ast.ty_con_exp( Ast.THIN_ARROW, TY_EXP1::TY_EXP2::nil )
+        in
+          {
+            schematic_vars = Ast.vars_in_ty_exp TE,
+            ty_exp = TE
+            }
+        end
+      } )
+
+FUN_DECS : 
+    FUN_DEC ( FUN_DEC :: nil )
+  | FUN_DEC AND FUN_DECS ( FUN_DEC :: FUN_DECS )
+
+PAT : 
+    LPAR PAT RPAR ( PAT )
+  | LPAR PAT COMMA PAT_LIST RPAR ( Ast.app_exp {
+      func=Ast.TUPLE,
+      args=PAT::PAT_LIST,
+      exp_info=Ast.no_exp_info()
+      } )
+  | PAT CONS PAT ( Ast.app_exp {
+      func=Ast.CONS,
+      args=PAT1::PAT2::nil,
+      exp_info=Ast.no_exp_info()
+      } )
+  | ID LPAR PAT_LIST RPAR ( Ast.app_exp {
+      func=Ast.string_to_symbol( Ast.var_sym, ID ),
+      args=PAT_LIST,
+      exp_info=Ast.no_exp_info()
+      } )
+  | ID AS PAT ( Ast.as_exp {
+      var=Ast.string_to_symbol( Ast.var_sym, ID ),
+      pat=PAT, 
+      exp_info=Ast.no_exp_info()
+      } )
+  | ID ID ( Ast.app_exp {
+      func=Ast.string_to_symbol( Ast.var_sym, ID1 ),
+      args=[ Ast.app_exp{
+        func=Ast.string_to_symbol( Ast.var_sym, ID2 ),
+        args=nil,
+        exp_info=Ast.no_exp_info() } ],
+      exp_info=Ast.no_exp_info()
+      } )
+
+  | ID ( Ast.app_exp {
+      func=Ast.string_to_symbol( Ast.var_sym, ID ),
+      args=nil,
+      exp_info=Ast.no_exp_info()
+      } )
+
+PAT_LIST : 
+    PAT ( PAT::nil )
+  | PAT COMMA PAT_LIST ( PAT::PAT_LIST )
+
+EXP : 
+    RAISE ID ( Ast.app_exp {
+      func = Ast.string_to_qsymbol ID,
+      args = [],
+      exp_info = Ast.no_exp_info()
+      } )
+  | LPAR EXP RPAR ( EXP )
+  | LPAR EXP COMMA EXP_LIST RPAR ( Ast.app_exp {
+      func=Ast.TUPLE,
+      args=EXP::EXP_LIST,
+      exp_info=Ast.no_exp_info()
+      } )
+  | ID LPAR EXP_LIST RPAR ( Ast.app_exp {
+      func=Ast.string_to_symbol( Ast.func_sym, ID ),
+      args=EXP_LIST,
+      exp_info=Ast.no_exp_info()
+      } )
+  | ID ID ( Ast.app_exp {
+      func = Ast.string_to_symbol( Ast.func_sym, ID1 ),
+      args = Ast.app_exp {
+        func = Ast.string_to_symbol' ID2,
+        args = nil,
+        exp_info = Ast.no_exp_info()
+        }
+        ::
+        nil,
+      exp_info = Ast.no_exp_info() 
+      } )
+  | ID INT ( Ast.app_exp {
+      func = Ast.string_to_symbol( Ast.func_sym, ID ),
+      args = Ast.app_exp {
+        func = Ast.int_to_symbol INT,
+        args = nil,
+        exp_info = Ast.no_exp_info()
+        }
+        ::
+        nil,
+      exp_info = Ast.no_exp_info() 
+      } )
+  | ID REAL ( Ast.app_exp {
+      func = Ast.string_to_symbol( Ast.func_sym, ID ),
+      args = Ast.app_exp {
+        func = Ast.real_to_symbol REAL,
+        args = nil,
+        exp_info = Ast.no_exp_info()
+        }
+        ::
+        nil,
+      exp_info = Ast.no_exp_info() 
+      } )
+  | ID ( Ast.app_exp {
+      func=Ast.string_to_symbol' ID,
+      args=nil,
+      exp_info=Ast.no_exp_info()
+      } )
+  | INT ( Ast.app_exp {
+      func=Ast.int_to_symbol INT,
+      args=nil,
+      exp_info=Ast.no_exp_info()
+      } )
+  | REAL ( Ast.app_exp {
+      func=Ast.real_to_symbol REAL,
+      args=nil,
+      exp_info=Ast.no_exp_info()
+      } )
+  | EXP SEMICOLON EXP ( Ast.app_exp {
+      func=Ast.SEMICOLON,
+      args=EXP1::EXP2::nil,
+      exp_info=Ast.no_exp_info()
+      } )
+  | EXP EQ EXP ( Ast.app_exp {
+      func=Ast.EQ,
+      args=EXP1::EXP2::nil,
+      exp_info=Ast.no_exp_info()
+      } )
+  | EXP LESS' EXP ( Ast.app_exp {
+      func=Ast.LESS',
+      args=EXP1::EXP2::nil,
+      exp_info=Ast.no_exp_info()
+      } )
+  | EXP MUL EXP ( Ast.app_exp {
+      func=Ast.MUL,
+      args=EXP1::EXP2::nil,
+      exp_info=Ast.no_exp_info()
+      } )
+  | EXP DIV EXP ( Ast.app_exp {
+      func=Ast.DIV,
+      args=EXP1::EXP2::nil,
+      exp_info=Ast.no_exp_info()
+      } )
+  | EXP PLUS EXP ( Ast.app_exp {
+      func=Ast.PLUS,
+      args=EXP1::EXP2::nil,
+      exp_info=Ast.no_exp_info()
+      } )
+  | EXP MINUS EXP ( Ast.app_exp {
+      func=Ast.MINUS,
+      args=EXP1::EXP2::nil,
+      exp_info=Ast.no_exp_info()
+      } )
+  | EXP CONS EXP ( Ast.app_exp {
+      func=Ast.CONS,
+      args=EXP1::EXP2::nil,
+      exp_info=Ast.no_exp_info()
+      } )
+  | EXP APPEND EXP ( Ast.app_exp {
+      func=Ast.APPEND,
+      args=EXP1::EXP2::nil,
+      exp_info=Ast.no_exp_info()
+      } )
+  | CASE EXP OF RULE_LIST ( Ast.case_exp {
+      exp=EXP,
+      rules=RULE_LIST,
+      exp_info=Ast.no_exp_info()
+      } )
+  | LET FUN_DEC_LIST IN EXP END ( Ast.let_exp {
+      dec_list=FUN_DEC_LIST,
+      exp=EXP,
+      exp_info=Ast.no_exp_info()
+      } )
+
+EXP_LIST : 
+    EXP ( EXP::nil )
+  | EXP COMMA EXP_LIST ( EXP::EXP_LIST )
+
+
+RULE_LIST : 
+    PAT ARROW EXP ( Ast.mk_new_rule(PAT,EXP) :: nil )
+  | PAT ARROW EXP VBAR RULE_LIST ( 
+      Ast.mk_new_rule(PAT,EXP) :: RULE_LIST 
+      )
+

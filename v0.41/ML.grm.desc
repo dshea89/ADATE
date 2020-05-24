@@ -1,0 +1,2008 @@
+
+state 0:
+
+	START : . DEC_LIST 
+
+	FUN	shift 9
+	DATATYPE	shift 8
+	TYPE	shift 7
+	EXCEPTION	shift 6
+
+	START	goto 145
+	DEC_LIST	goto 5
+	DEC	goto 4
+	DATATYPE_DEC_LIST	goto 3
+	TYPE_DEC	goto 2
+	FUN_DEC_LIST	goto 1
+
+	.	error
+
+
+state 1:
+
+	DEC : FUN_DEC_LIST .  (reduce by rule 1)
+
+
+
+	.	reduce by rule 1
+
+
+state 2:
+
+	DEC : TYPE_DEC .  (reduce by rule 2)
+
+
+
+	.	reduce by rule 2
+
+
+state 3:
+
+	DEC : DATATYPE_DEC_LIST .  (reduce by rule 3)
+
+
+
+	.	reduce by rule 3
+
+
+state 4:
+
+	DEC_LIST : DEC .  (reduce by rule 4)
+	DEC_LIST : DEC . DEC_LIST 
+
+	FUN	shift 9
+	DATATYPE	shift 8
+	TYPE	shift 7
+	EXCEPTION	shift 6
+
+	DEC_LIST	goto 10
+	DEC	goto 4
+	DATATYPE_DEC_LIST	goto 3
+	TYPE_DEC	goto 2
+	FUN_DEC_LIST	goto 1
+
+	.	reduce by rule 4
+
+
+state 5:
+
+	START : DEC_LIST .  (reduce by rule 0)
+
+
+
+	.	reduce by rule 0
+
+
+state 6:
+
+	DEC_LIST : EXCEPTION . ID DEC_LIST 
+
+	ID	shift 11
+
+
+	.	error
+
+
+state 7:
+
+	TYPE_DEC : TYPE . TY_PAR_LIST ID EQ TY_EXP 
+
+	LPAR	shift 15
+	PRIME	shift 14
+
+	TY_VAR	goto 13
+	TY_PAR_LIST	goto 12
+
+	.	reduce by rule 15
+
+
+state 8:
+
+	DATATYPE_DEC_LIST : DATATYPE . DATATYPE_DECS 
+
+	LPAR	shift 15
+	PRIME	shift 14
+
+	DATATYPE_DECS	goto 18
+	DATATYPE_DEC	goto 17
+	TY_VAR	goto 13
+	TY_PAR_LIST	goto 16
+
+	.	reduce by rule 15
+
+
+state 9:
+
+	FUN_DEC_LIST : FUN . FUN_DECS 
+
+	ID	shift 21
+
+	FUN_DECS	goto 20
+	FUN_DEC	goto 19
+
+	.	error
+
+
+state 10:
+
+	DEC_LIST : DEC DEC_LIST .  (reduce by rule 6)
+
+
+
+	.	reduce by rule 6
+
+
+state 11:
+
+	DEC_LIST : EXCEPTION ID . DEC_LIST 
+
+	FUN	shift 9
+	DATATYPE	shift 8
+	TYPE	shift 7
+	EXCEPTION	shift 6
+
+	DEC_LIST	goto 22
+	DEC	goto 4
+	DATATYPE_DEC_LIST	goto 3
+	TYPE_DEC	goto 2
+	FUN_DEC_LIST	goto 1
+
+	.	error
+
+
+state 12:
+
+	TYPE_DEC : TYPE TY_PAR_LIST . ID EQ TY_EXP 
+
+	ID	shift 23
+
+
+	.	error
+
+
+state 13:
+
+	TY_PAR_LIST : TY_VAR . COMMA TY_PAR_LIST 
+	TY_PAR_LIST : TY_VAR .  (reduce by rule 14)
+
+	COMMA	shift 24
+
+
+	.	reduce by rule 14
+
+
+state 14:
+
+	TY_VAR : PRIME . ID 
+
+	ID	shift 25
+
+
+	.	error
+
+
+state 15:
+
+	TY_PAR_LIST : LPAR . TY_PAR_LIST RPAR 
+
+	LPAR	shift 15
+	PRIME	shift 14
+
+	TY_VAR	goto 13
+	TY_PAR_LIST	goto 26
+
+	.	reduce by rule 15
+
+
+state 16:
+
+	DATATYPE_DEC : TY_PAR_LIST . ID EQ ALT_LIST 
+
+	ID	shift 27
+
+
+	.	error
+
+
+state 17:
+
+	DATATYPE_DECS : DATATYPE_DEC .  (reduce by rule 8)
+	DATATYPE_DECS : DATATYPE_DEC . AND DATATYPE_DECS 
+
+	AND	shift 28
+
+
+	.	reduce by rule 8
+
+
+state 18:
+
+	DATATYPE_DEC_LIST : DATATYPE DATATYPE_DECS .  (reduce by rule 7)
+
+
+
+	.	reduce by rule 7
+
+
+state 19:
+
+	FUN_DECS : FUN_DEC .  (reduce by rule 36)
+	FUN_DECS : FUN_DEC . AND FUN_DECS 
+
+	AND	shift 29
+
+
+	.	reduce by rule 36
+
+
+state 20:
+
+	FUN_DEC_LIST : FUN FUN_DECS .  (reduce by rule 33)
+
+
+
+	.	reduce by rule 33
+
+
+state 21:
+
+	FUN_DEC : ID . PAT EQ EXP 
+	FUN_DEC : ID . LPAR PAT COLON TY_EXP RPAR COLON TY_EXP EQ EXP 
+
+	LPAR	shift 32
+	ID	shift 31
+
+	PAT	goto 30
+
+	.	error
+
+
+state 22:
+
+	DEC_LIST : EXCEPTION ID DEC_LIST .  (reduce by rule 5)
+
+
+
+	.	reduce by rule 5
+
+
+state 23:
+
+	TYPE_DEC : TYPE TY_PAR_LIST ID . EQ TY_EXP 
+
+	EQ	shift 33
+
+
+	.	error
+
+
+state 24:
+
+	TY_PAR_LIST : TY_VAR COMMA . TY_PAR_LIST 
+
+	LPAR	shift 15
+	PRIME	shift 14
+
+	TY_VAR	goto 13
+	TY_PAR_LIST	goto 34
+
+	.	reduce by rule 15
+
+
+state 25:
+
+	TY_VAR : PRIME ID .  (reduce by rule 11)
+
+
+
+	.	reduce by rule 11
+
+
+state 26:
+
+	TY_PAR_LIST : LPAR TY_PAR_LIST . RPAR 
+
+	RPAR	shift 35
+
+
+	.	error
+
+
+state 27:
+
+	DATATYPE_DEC : TY_PAR_LIST ID . EQ ALT_LIST 
+
+	EQ	shift 36
+
+
+	.	error
+
+
+state 28:
+
+	DATATYPE_DECS : DATATYPE_DEC AND . DATATYPE_DECS 
+
+	LPAR	shift 15
+	PRIME	shift 14
+
+	DATATYPE_DECS	goto 37
+	DATATYPE_DEC	goto 17
+	TY_VAR	goto 13
+	TY_PAR_LIST	goto 16
+
+	.	reduce by rule 15
+
+
+state 29:
+
+	FUN_DECS : FUN_DEC AND . FUN_DECS 
+
+	ID	shift 21
+
+	FUN_DECS	goto 38
+	FUN_DEC	goto 19
+
+	.	error
+
+
+state 30:
+
+	PAT : PAT . CONS PAT 
+	FUN_DEC : ID PAT . EQ EXP 
+
+	EQ	shift 40
+	CONS	shift 39
+
+
+	.	error
+
+
+state 31:
+
+	PAT : ID . LPAR PAT_LIST RPAR 
+	PAT : ID . AS PAT 
+	PAT : ID . ID 
+	PAT : ID .  (reduce by rule 44)
+
+	AS	shift 43
+	LPAR	shift 42
+	ID	shift 41
+
+
+	.	reduce by rule 44
+
+
+state 32:
+
+	PAT : LPAR . PAT RPAR 
+	PAT : LPAR . PAT COMMA PAT_LIST RPAR 
+	FUN_DEC : ID LPAR . PAT COLON TY_EXP RPAR COLON TY_EXP EQ EXP 
+
+	LPAR	shift 45
+	ID	shift 31
+
+	PAT	goto 44
+
+	.	error
+
+
+state 33:
+
+	TYPE_DEC : TYPE TY_PAR_LIST ID EQ . TY_EXP 
+
+	LPAR	shift 51
+	PRIME	shift 14
+	ID	shift 50
+
+	TY_VAR	goto 49
+	TY_EXP	goto 48
+	BASIC_TY_EXP	goto 47
+	CART_PROD	goto 46
+
+	.	error
+
+
+state 34:
+
+	TY_PAR_LIST : TY_VAR COMMA TY_PAR_LIST .  (reduce by rule 13)
+
+
+
+	.	reduce by rule 13
+
+
+state 35:
+
+	TY_PAR_LIST : LPAR TY_PAR_LIST RPAR .  (reduce by rule 12)
+
+
+
+	.	reduce by rule 12
+
+
+state 36:
+
+	DATATYPE_DEC : TY_PAR_LIST ID EQ . ALT_LIST 
+
+	ID	shift 54
+
+	ALT_LIST	goto 53
+	ALT	goto 52
+
+	.	error
+
+
+state 37:
+
+	DATATYPE_DECS : DATATYPE_DEC AND DATATYPE_DECS .  (reduce by rule 9)
+
+
+
+	.	reduce by rule 9
+
+
+state 38:
+
+	FUN_DECS : FUN_DEC AND FUN_DECS .  (reduce by rule 37)
+
+
+
+	.	reduce by rule 37
+
+
+state 39:
+
+	PAT : PAT CONS . PAT 
+
+	LPAR	shift 45
+	ID	shift 31
+
+	PAT	goto 55
+
+	.	error
+
+
+state 40:
+
+	FUN_DEC : ID PAT EQ . EXP 
+
+	LET	shift 63
+	CASE	shift 62
+	LPAR	shift 61
+	RAISE	shift 60
+	INT	shift 59
+	REAL	shift 58
+	ID	shift 57
+
+	EXP	goto 56
+
+	.	error
+
+
+state 41:
+
+	PAT : ID ID .  (reduce by rule 43)
+
+
+
+	.	reduce by rule 43
+
+
+state 42:
+
+	PAT : ID LPAR . PAT_LIST RPAR 
+
+	LPAR	shift 45
+	ID	shift 31
+
+	PAT	goto 65
+	PAT_LIST	goto 64
+
+	.	error
+
+
+state 43:
+
+	PAT : ID AS . PAT 
+
+	LPAR	shift 45
+	ID	shift 31
+
+	PAT	goto 66
+
+	.	error
+
+
+state 44:
+
+	PAT : LPAR PAT . RPAR 
+	PAT : LPAR PAT . COMMA PAT_LIST RPAR 
+	PAT : PAT . CONS PAT 
+	FUN_DEC : ID LPAR PAT . COLON TY_EXP RPAR COLON TY_EXP EQ EXP 
+
+	RPAR	shift 69
+	COMMA	shift 68
+	COLON	shift 67
+	CONS	shift 39
+
+
+	.	error
+
+
+state 45:
+
+	PAT : LPAR . PAT RPAR 
+	PAT : LPAR . PAT COMMA PAT_LIST RPAR 
+
+	LPAR	shift 45
+	ID	shift 31
+
+	PAT	goto 70
+
+	.	error
+
+
+state 46:
+
+	TY_EXP : CART_PROD .  (reduce by rule 31)
+
+
+
+	.	reduce by rule 31
+
+
+state 47:
+
+	TY_EXP : BASIC_TY_EXP .  (reduce by rule 30)
+	BASIC_TY_EXP : BASIC_TY_EXP . ID 
+	CART_PROD : BASIC_TY_EXP . MUL BASIC_TY_EXP 
+	CART_PROD : BASIC_TY_EXP . MUL CART_PROD 
+
+	MUL	shift 72
+	ID	shift 71
+
+
+	.	reduce by rule 30
+
+
+state 48:
+
+	TYPE_DEC : TYPE TY_PAR_LIST ID EQ TY_EXP .  (reduce by rule 20)
+	TY_EXP : TY_EXP . THIN_ARROW TY_EXP 
+
+	THIN_ARROW	shift 73
+
+
+	.	reduce by rule 20
+
+
+state 49:
+
+	BASIC_TY_EXP : TY_VAR .  (reduce by rule 21)
+
+
+
+	.	reduce by rule 21
+
+
+state 50:
+
+	BASIC_TY_EXP : ID .  (reduce by rule 22)
+
+
+
+	.	reduce by rule 22
+
+
+state 51:
+
+	BASIC_TY_EXP : LPAR . TY_EXP RPAR 
+	BASIC_TY_EXP : LPAR . TY_EXP_LIST RPAR ID 
+
+	LPAR	shift 51
+	PRIME	shift 14
+	ID	shift 50
+
+	TY_VAR	goto 49
+	TY_EXP	goto 75
+	BASIC_TY_EXP	goto 47
+	CART_PROD	goto 46
+	TY_EXP_LIST	goto 74
+
+	.	error
+
+
+state 52:
+
+	ALT_LIST : ALT . VBAR ALT_LIST 
+	ALT_LIST : ALT .  (reduce by rule 17)
+
+	VBAR	shift 76
+
+
+	.	reduce by rule 17
+
+
+state 53:
+
+	DATATYPE_DEC : TY_PAR_LIST ID EQ ALT_LIST .  (reduce by rule 10)
+
+
+
+	.	reduce by rule 10
+
+
+state 54:
+
+	ALT : ID . OF TY_EXP 
+	ALT : ID .  (reduce by rule 19)
+
+	OF	shift 77
+
+
+	.	reduce by rule 19
+
+
+state 55:
+
+	PAT : PAT . CONS PAT 
+	PAT : PAT CONS PAT .  (reduce by rule 40)
+
+	CONS	shift 39
+
+
+	.	reduce by rule 40
+
+
+state 56:
+
+	EXP : EXP . SEMICOLON EXP 
+	EXP : EXP . EQ EXP 
+	EXP : EXP . LESS' EXP 
+	EXP : EXP . MUL EXP 
+	EXP : EXP . DIV EXP 
+	EXP : EXP . PLUS EXP 
+	EXP : EXP . MINUS EXP 
+	EXP : EXP . CONS EXP 
+	EXP : EXP . APPEND EXP 
+	FUN_DEC : ID PAT EQ EXP .  (reduce by rule 34)
+
+	SEMICOLON	shift 86
+	EQ	shift 85
+	LESS'	shift 84
+	PLUS	shift 83
+	MUL	shift 82
+	DIV	shift 81
+	MINUS	shift 80
+	CONS	shift 79
+	APPEND	shift 78
+
+
+	.	reduce by rule 34
+
+
+state 57:
+
+	EXP : ID . LPAR EXP_LIST RPAR 
+	EXP : ID . ID 
+	EXP : ID . INT 
+	EXP : ID . REAL 
+	EXP : ID .  (reduce by rule 54)
+
+	LPAR	shift 90
+	INT	shift 89
+	REAL	shift 88
+	ID	shift 87
+
+
+	.	reduce by rule 54
+
+
+state 58:
+
+	EXP : REAL .  (reduce by rule 56)
+
+
+
+	.	reduce by rule 56
+
+
+state 59:
+
+	EXP : INT .  (reduce by rule 55)
+
+
+
+	.	reduce by rule 55
+
+
+state 60:
+
+	EXP : RAISE . ID 
+
+	ID	shift 91
+
+
+	.	error
+
+
+state 61:
+
+	EXP : LPAR . EXP RPAR 
+	EXP : LPAR . EXP COMMA EXP_LIST RPAR 
+
+	LET	shift 63
+	CASE	shift 62
+	LPAR	shift 61
+	RAISE	shift 60
+	INT	shift 59
+	REAL	shift 58
+	ID	shift 57
+
+	EXP	goto 92
+
+	.	error
+
+
+state 62:
+
+	EXP : CASE . EXP OF RULE_LIST 
+
+	LET	shift 63
+	CASE	shift 62
+	LPAR	shift 61
+	RAISE	shift 60
+	INT	shift 59
+	REAL	shift 58
+	ID	shift 57
+
+	EXP	goto 93
+
+	.	error
+
+
+state 63:
+
+	EXP : LET . FUN_DEC_LIST IN EXP END 
+
+	FUN	shift 9
+
+	FUN_DEC_LIST	goto 94
+
+	.	error
+
+
+state 64:
+
+	PAT : ID LPAR PAT_LIST . RPAR 
+
+	RPAR	shift 95
+
+
+	.	error
+
+
+state 65:
+
+	PAT : PAT . CONS PAT 
+	PAT_LIST : PAT .  (reduce by rule 45)
+	PAT_LIST : PAT . COMMA PAT_LIST 
+
+	COMMA	shift 96
+	CONS	shift 39
+
+
+	.	reduce by rule 45
+
+
+state 66:
+
+	PAT : PAT . CONS PAT 
+	PAT : ID AS PAT .  (reduce by rule 42)
+
+	CONS	shift 39
+
+
+	.	reduce by rule 42
+
+
+state 67:
+
+	FUN_DEC : ID LPAR PAT COLON . TY_EXP RPAR COLON TY_EXP EQ EXP 
+
+	LPAR	shift 51
+	PRIME	shift 14
+	ID	shift 50
+
+	TY_VAR	goto 49
+	TY_EXP	goto 97
+	BASIC_TY_EXP	goto 47
+	CART_PROD	goto 46
+
+	.	error
+
+
+state 68:
+
+	PAT : LPAR PAT COMMA . PAT_LIST RPAR 
+
+	LPAR	shift 45
+	ID	shift 31
+
+	PAT	goto 65
+	PAT_LIST	goto 98
+
+	.	error
+
+
+state 69:
+
+	PAT : LPAR PAT RPAR .  (reduce by rule 38)
+
+
+
+	.	reduce by rule 38
+
+
+state 70:
+
+	PAT : LPAR PAT . RPAR 
+	PAT : LPAR PAT . COMMA PAT_LIST RPAR 
+	PAT : PAT . CONS PAT 
+
+	RPAR	shift 69
+	COMMA	shift 68
+	CONS	shift 39
+
+
+	.	error
+
+
+state 71:
+
+	BASIC_TY_EXP : BASIC_TY_EXP ID .  (reduce by rule 25)
+
+
+
+	.	reduce by rule 25
+
+
+state 72:
+
+	CART_PROD : BASIC_TY_EXP MUL . BASIC_TY_EXP 
+	CART_PROD : BASIC_TY_EXP MUL . CART_PROD 
+
+	LPAR	shift 51
+	PRIME	shift 14
+	ID	shift 50
+
+	TY_VAR	goto 49
+	BASIC_TY_EXP	goto 100
+	CART_PROD	goto 99
+
+	.	error
+
+
+state 73:
+
+	TY_EXP : TY_EXP THIN_ARROW . TY_EXP 
+
+	LPAR	shift 51
+	PRIME	shift 14
+	ID	shift 50
+
+	TY_VAR	goto 49
+	TY_EXP	goto 101
+	BASIC_TY_EXP	goto 47
+	CART_PROD	goto 46
+
+	.	error
+
+
+state 74:
+
+	BASIC_TY_EXP : LPAR TY_EXP_LIST . RPAR ID 
+
+	RPAR	shift 102
+
+
+	.	error
+
+
+state 75:
+
+	TY_EXP : TY_EXP . THIN_ARROW TY_EXP 
+	BASIC_TY_EXP : LPAR TY_EXP . RPAR 
+	TY_EXP_LIST : TY_EXP . COMMA TY_EXP 
+	TY_EXP_LIST : TY_EXP . COMMA TY_EXP_LIST 
+
+	RPAR	shift 104
+	THIN_ARROW	shift 73
+	COMMA	shift 103
+
+
+	.	error
+
+
+state 76:
+
+	ALT_LIST : ALT VBAR . ALT_LIST 
+
+	ID	shift 54
+
+	ALT_LIST	goto 105
+	ALT	goto 52
+
+	.	error
+
+
+state 77:
+
+	ALT : ID OF . TY_EXP 
+
+	LPAR	shift 51
+	PRIME	shift 14
+	ID	shift 50
+
+	TY_VAR	goto 49
+	TY_EXP	goto 106
+	BASIC_TY_EXP	goto 47
+	CART_PROD	goto 46
+
+	.	error
+
+
+state 78:
+
+	EXP : EXP APPEND . EXP 
+
+	LET	shift 63
+	CASE	shift 62
+	LPAR	shift 61
+	RAISE	shift 60
+	INT	shift 59
+	REAL	shift 58
+	ID	shift 57
+
+	EXP	goto 107
+
+	.	error
+
+
+state 79:
+
+	EXP : EXP CONS . EXP 
+
+	LET	shift 63
+	CASE	shift 62
+	LPAR	shift 61
+	RAISE	shift 60
+	INT	shift 59
+	REAL	shift 58
+	ID	shift 57
+
+	EXP	goto 108
+
+	.	error
+
+
+state 80:
+
+	EXP : EXP MINUS . EXP 
+
+	LET	shift 63
+	CASE	shift 62
+	LPAR	shift 61
+	RAISE	shift 60
+	INT	shift 59
+	REAL	shift 58
+	ID	shift 57
+
+	EXP	goto 109
+
+	.	error
+
+
+state 81:
+
+	EXP : EXP DIV . EXP 
+
+	LET	shift 63
+	CASE	shift 62
+	LPAR	shift 61
+	RAISE	shift 60
+	INT	shift 59
+	REAL	shift 58
+	ID	shift 57
+
+	EXP	goto 110
+
+	.	error
+
+
+state 82:
+
+	EXP : EXP MUL . EXP 
+
+	LET	shift 63
+	CASE	shift 62
+	LPAR	shift 61
+	RAISE	shift 60
+	INT	shift 59
+	REAL	shift 58
+	ID	shift 57
+
+	EXP	goto 111
+
+	.	error
+
+
+state 83:
+
+	EXP : EXP PLUS . EXP 
+
+	LET	shift 63
+	CASE	shift 62
+	LPAR	shift 61
+	RAISE	shift 60
+	INT	shift 59
+	REAL	shift 58
+	ID	shift 57
+
+	EXP	goto 112
+
+	.	error
+
+
+state 84:
+
+	EXP : EXP LESS' . EXP 
+
+	LET	shift 63
+	CASE	shift 62
+	LPAR	shift 61
+	RAISE	shift 60
+	INT	shift 59
+	REAL	shift 58
+	ID	shift 57
+
+	EXP	goto 113
+
+	.	error
+
+
+state 85:
+
+	EXP : EXP EQ . EXP 
+
+	LET	shift 63
+	CASE	shift 62
+	LPAR	shift 61
+	RAISE	shift 60
+	INT	shift 59
+	REAL	shift 58
+	ID	shift 57
+
+	EXP	goto 114
+
+	.	error
+
+
+state 86:
+
+	EXP : EXP SEMICOLON . EXP 
+
+	LET	shift 63
+	CASE	shift 62
+	LPAR	shift 61
+	RAISE	shift 60
+	INT	shift 59
+	REAL	shift 58
+	ID	shift 57
+
+	EXP	goto 115
+
+	.	error
+
+
+state 87:
+
+	EXP : ID ID .  (reduce by rule 51)
+
+
+
+	.	reduce by rule 51
+
+
+state 88:
+
+	EXP : ID REAL .  (reduce by rule 53)
+
+
+
+	.	reduce by rule 53
+
+
+state 89:
+
+	EXP : ID INT .  (reduce by rule 52)
+
+
+
+	.	reduce by rule 52
+
+
+state 90:
+
+	EXP : ID LPAR . EXP_LIST RPAR 
+
+	LET	shift 63
+	CASE	shift 62
+	LPAR	shift 61
+	RAISE	shift 60
+	INT	shift 59
+	REAL	shift 58
+	ID	shift 57
+
+	EXP	goto 117
+	EXP_LIST	goto 116
+
+	.	error
+
+
+state 91:
+
+	EXP : RAISE ID .  (reduce by rule 47)
+
+
+
+	.	reduce by rule 47
+
+
+state 92:
+
+	EXP : LPAR EXP . RPAR 
+	EXP : LPAR EXP . COMMA EXP_LIST RPAR 
+	EXP : EXP . SEMICOLON EXP 
+	EXP : EXP . EQ EXP 
+	EXP : EXP . LESS' EXP 
+	EXP : EXP . MUL EXP 
+	EXP : EXP . DIV EXP 
+	EXP : EXP . PLUS EXP 
+	EXP : EXP . MINUS EXP 
+	EXP : EXP . CONS EXP 
+	EXP : EXP . APPEND EXP 
+
+	RPAR	shift 119
+	COMMA	shift 118
+	SEMICOLON	shift 86
+	EQ	shift 85
+	LESS'	shift 84
+	PLUS	shift 83
+	MUL	shift 82
+	DIV	shift 81
+	MINUS	shift 80
+	CONS	shift 79
+	APPEND	shift 78
+
+
+	.	error
+
+
+state 93:
+
+	EXP : EXP . SEMICOLON EXP 
+	EXP : EXP . EQ EXP 
+	EXP : EXP . LESS' EXP 
+	EXP : EXP . MUL EXP 
+	EXP : EXP . DIV EXP 
+	EXP : EXP . PLUS EXP 
+	EXP : EXP . MINUS EXP 
+	EXP : EXP . CONS EXP 
+	EXP : EXP . APPEND EXP 
+	EXP : CASE EXP . OF RULE_LIST 
+
+	OF	shift 120
+	SEMICOLON	shift 86
+	EQ	shift 85
+	LESS'	shift 84
+	PLUS	shift 83
+	MUL	shift 82
+	DIV	shift 81
+	MINUS	shift 80
+	CONS	shift 79
+	APPEND	shift 78
+
+
+	.	error
+
+
+state 94:
+
+	EXP : LET FUN_DEC_LIST . IN EXP END 
+
+	IN	shift 121
+
+
+	.	error
+
+
+state 95:
+
+	PAT : ID LPAR PAT_LIST RPAR .  (reduce by rule 41)
+
+
+
+	.	reduce by rule 41
+
+
+state 96:
+
+	PAT_LIST : PAT COMMA . PAT_LIST 
+
+	LPAR	shift 45
+	ID	shift 31
+
+	PAT	goto 65
+	PAT_LIST	goto 122
+
+	.	error
+
+
+state 97:
+
+	FUN_DEC : ID LPAR PAT COLON TY_EXP . RPAR COLON TY_EXP EQ EXP 
+	TY_EXP : TY_EXP . THIN_ARROW TY_EXP 
+
+	RPAR	shift 123
+	THIN_ARROW	shift 73
+
+
+	.	error
+
+
+state 98:
+
+	PAT : LPAR PAT COMMA PAT_LIST . RPAR 
+
+	RPAR	shift 124
+
+
+	.	error
+
+
+state 99:
+
+	CART_PROD : BASIC_TY_EXP MUL CART_PROD .  (reduce by rule 29)
+
+
+
+	.	reduce by rule 29
+
+
+state 100:
+
+	BASIC_TY_EXP : BASIC_TY_EXP . ID 
+	CART_PROD : BASIC_TY_EXP . MUL BASIC_TY_EXP 
+	CART_PROD : BASIC_TY_EXP MUL BASIC_TY_EXP .  (reduce by rule 28)
+	CART_PROD : BASIC_TY_EXP . MUL CART_PROD 
+
+	MUL	shift 72
+	ID	shift 71
+
+
+	.	reduce by rule 28
+
+
+state 101:
+
+	TY_EXP : TY_EXP . THIN_ARROW TY_EXP 
+	TY_EXP : TY_EXP THIN_ARROW TY_EXP .  (reduce by rule 32)
+
+	THIN_ARROW	shift 73
+
+
+	.	reduce by rule 32
+
+
+state 102:
+
+	BASIC_TY_EXP : LPAR TY_EXP_LIST RPAR . ID 
+
+	ID	shift 125
+
+
+	.	error
+
+
+state 103:
+
+	TY_EXP_LIST : TY_EXP COMMA . TY_EXP 
+	TY_EXP_LIST : TY_EXP COMMA . TY_EXP_LIST 
+
+	LPAR	shift 51
+	PRIME	shift 14
+	ID	shift 50
+
+	TY_VAR	goto 49
+	TY_EXP	goto 127
+	BASIC_TY_EXP	goto 47
+	CART_PROD	goto 46
+	TY_EXP_LIST	goto 126
+
+	.	error
+
+
+state 104:
+
+	BASIC_TY_EXP : LPAR TY_EXP RPAR .  (reduce by rule 23)
+
+
+
+	.	reduce by rule 23
+
+
+state 105:
+
+	ALT_LIST : ALT VBAR ALT_LIST .  (reduce by rule 16)
+
+
+
+	.	reduce by rule 16
+
+
+state 106:
+
+	ALT : ID OF TY_EXP .  (reduce by rule 18)
+	TY_EXP : TY_EXP . THIN_ARROW TY_EXP 
+
+	THIN_ARROW	shift 73
+
+
+	.	reduce by rule 18
+
+
+state 107:
+
+	EXP : EXP . SEMICOLON EXP 
+	EXP : EXP . EQ EXP 
+	EXP : EXP . LESS' EXP 
+	EXP : EXP . MUL EXP 
+	EXP : EXP . DIV EXP 
+	EXP : EXP . PLUS EXP 
+	EXP : EXP . MINUS EXP 
+	EXP : EXP . CONS EXP 
+	EXP : EXP . APPEND EXP 
+	EXP : EXP APPEND EXP .  (reduce by rule 65)
+
+	PLUS	shift 83
+	MUL	shift 82
+	DIV	shift 81
+	MINUS	shift 80
+	CONS	shift 79
+	APPEND	shift 78
+
+
+	.	reduce by rule 65
+
+
+state 108:
+
+	EXP : EXP . SEMICOLON EXP 
+	EXP : EXP . EQ EXP 
+	EXP : EXP . LESS' EXP 
+	EXP : EXP . MUL EXP 
+	EXP : EXP . DIV EXP 
+	EXP : EXP . PLUS EXP 
+	EXP : EXP . MINUS EXP 
+	EXP : EXP . CONS EXP 
+	EXP : EXP CONS EXP .  (reduce by rule 64)
+	EXP : EXP . APPEND EXP 
+
+	PLUS	shift 83
+	MUL	shift 82
+	DIV	shift 81
+	MINUS	shift 80
+	CONS	shift 79
+	APPEND	shift 78
+
+
+	.	reduce by rule 64
+
+
+state 109:
+
+	EXP : EXP . SEMICOLON EXP 
+	EXP : EXP . EQ EXP 
+	EXP : EXP . LESS' EXP 
+	EXP : EXP . MUL EXP 
+	EXP : EXP . DIV EXP 
+	EXP : EXP . PLUS EXP 
+	EXP : EXP . MINUS EXP 
+	EXP : EXP MINUS EXP .  (reduce by rule 63)
+	EXP : EXP . CONS EXP 
+	EXP : EXP . APPEND EXP 
+
+	MUL	shift 82
+	DIV	shift 81
+
+
+	.	reduce by rule 63
+
+
+state 110:
+
+	EXP : EXP . SEMICOLON EXP 
+	EXP : EXP . EQ EXP 
+	EXP : EXP . LESS' EXP 
+	EXP : EXP . MUL EXP 
+	EXP : EXP . DIV EXP 
+	EXP : EXP DIV EXP .  (reduce by rule 61)
+	EXP : EXP . PLUS EXP 
+	EXP : EXP . MINUS EXP 
+	EXP : EXP . CONS EXP 
+	EXP : EXP . APPEND EXP 
+
+
+
+	.	reduce by rule 61
+
+
+state 111:
+
+	EXP : EXP . SEMICOLON EXP 
+	EXP : EXP . EQ EXP 
+	EXP : EXP . LESS' EXP 
+	EXP : EXP . MUL EXP 
+	EXP : EXP MUL EXP .  (reduce by rule 60)
+	EXP : EXP . DIV EXP 
+	EXP : EXP . PLUS EXP 
+	EXP : EXP . MINUS EXP 
+	EXP : EXP . CONS EXP 
+	EXP : EXP . APPEND EXP 
+
+
+
+	.	reduce by rule 60
+
+
+state 112:
+
+	EXP : EXP . SEMICOLON EXP 
+	EXP : EXP . EQ EXP 
+	EXP : EXP . LESS' EXP 
+	EXP : EXP . MUL EXP 
+	EXP : EXP . DIV EXP 
+	EXP : EXP . PLUS EXP 
+	EXP : EXP PLUS EXP .  (reduce by rule 62)
+	EXP : EXP . MINUS EXP 
+	EXP : EXP . CONS EXP 
+	EXP : EXP . APPEND EXP 
+
+	MUL	shift 82
+	DIV	shift 81
+
+
+	.	reduce by rule 62
+
+
+state 113:
+
+	EXP : EXP . SEMICOLON EXP 
+	EXP : EXP . EQ EXP 
+	EXP : EXP . LESS' EXP 
+	EXP : EXP LESS' EXP .  (reduce by rule 59)
+	EXP : EXP . MUL EXP 
+	EXP : EXP . DIV EXP 
+	EXP : EXP . PLUS EXP 
+	EXP : EXP . MINUS EXP 
+	EXP : EXP . CONS EXP 
+	EXP : EXP . APPEND EXP 
+
+	FUN	reduce by rule 59
+	DATATYPE	reduce by rule 59
+	TYPE	reduce by rule 59
+	AND	reduce by rule 59
+	IN	reduce by rule 59
+	END	reduce by rule 59
+	OF	reduce by rule 59
+	RPAR	reduce by rule 59
+	VBAR	reduce by rule 59
+	COMMA	reduce by rule 59
+	SEMICOLON	reduce by rule 59
+	PLUS	shift 83
+	MUL	shift 82
+	DIV	shift 81
+	MINUS	shift 80
+	CONS	shift 79
+	APPEND	shift 78
+	EXCEPTION	reduce by rule 59
+	EOF	reduce by rule 59
+
+
+	.	error
+
+
+state 114:
+
+	EXP : EXP . SEMICOLON EXP 
+	EXP : EXP . EQ EXP 
+	EXP : EXP EQ EXP .  (reduce by rule 58)
+	EXP : EXP . LESS' EXP 
+	EXP : EXP . MUL EXP 
+	EXP : EXP . DIV EXP 
+	EXP : EXP . PLUS EXP 
+	EXP : EXP . MINUS EXP 
+	EXP : EXP . CONS EXP 
+	EXP : EXP . APPEND EXP 
+
+	FUN	reduce by rule 58
+	DATATYPE	reduce by rule 58
+	TYPE	reduce by rule 58
+	AND	reduce by rule 58
+	IN	reduce by rule 58
+	END	reduce by rule 58
+	OF	reduce by rule 58
+	RPAR	reduce by rule 58
+	VBAR	reduce by rule 58
+	COMMA	reduce by rule 58
+	SEMICOLON	reduce by rule 58
+	PLUS	shift 83
+	MUL	shift 82
+	DIV	shift 81
+	MINUS	shift 80
+	CONS	shift 79
+	APPEND	shift 78
+	EXCEPTION	reduce by rule 58
+	EOF	reduce by rule 58
+
+
+	.	error
+
+
+state 115:
+
+	EXP : EXP . SEMICOLON EXP 
+	EXP : EXP SEMICOLON EXP .  (reduce by rule 57)
+	EXP : EXP . EQ EXP 
+	EXP : EXP . LESS' EXP 
+	EXP : EXP . MUL EXP 
+	EXP : EXP . DIV EXP 
+	EXP : EXP . PLUS EXP 
+	EXP : EXP . MINUS EXP 
+	EXP : EXP . CONS EXP 
+	EXP : EXP . APPEND EXP 
+
+	EQ	shift 85
+	LESS'	shift 84
+	PLUS	shift 83
+	MUL	shift 82
+	DIV	shift 81
+	MINUS	shift 80
+	CONS	shift 79
+	APPEND	shift 78
+
+
+	.	reduce by rule 57
+
+
+state 116:
+
+	EXP : ID LPAR EXP_LIST . RPAR 
+
+	RPAR	shift 128
+
+
+	.	error
+
+
+state 117:
+
+	EXP : EXP . SEMICOLON EXP 
+	EXP : EXP . EQ EXP 
+	EXP : EXP . LESS' EXP 
+	EXP : EXP . MUL EXP 
+	EXP : EXP . DIV EXP 
+	EXP : EXP . PLUS EXP 
+	EXP : EXP . MINUS EXP 
+	EXP : EXP . CONS EXP 
+	EXP : EXP . APPEND EXP 
+	EXP_LIST : EXP .  (reduce by rule 68)
+	EXP_LIST : EXP . COMMA EXP_LIST 
+
+	COMMA	shift 129
+	SEMICOLON	shift 86
+	EQ	shift 85
+	LESS'	shift 84
+	PLUS	shift 83
+	MUL	shift 82
+	DIV	shift 81
+	MINUS	shift 80
+	CONS	shift 79
+	APPEND	shift 78
+
+
+	.	reduce by rule 68
+
+
+state 118:
+
+	EXP : LPAR EXP COMMA . EXP_LIST RPAR 
+
+	LET	shift 63
+	CASE	shift 62
+	LPAR	shift 61
+	RAISE	shift 60
+	INT	shift 59
+	REAL	shift 58
+	ID	shift 57
+
+	EXP	goto 117
+	EXP_LIST	goto 130
+
+	.	error
+
+
+state 119:
+
+	EXP : LPAR EXP RPAR .  (reduce by rule 48)
+
+
+
+	.	reduce by rule 48
+
+
+state 120:
+
+	EXP : CASE EXP OF . RULE_LIST 
+
+	LPAR	shift 45
+	ID	shift 31
+
+	PAT	goto 132
+	RULE_LIST	goto 131
+
+	.	error
+
+
+state 121:
+
+	EXP : LET FUN_DEC_LIST IN . EXP END 
+
+	LET	shift 63
+	CASE	shift 62
+	LPAR	shift 61
+	RAISE	shift 60
+	INT	shift 59
+	REAL	shift 58
+	ID	shift 57
+
+	EXP	goto 133
+
+	.	error
+
+
+state 122:
+
+	PAT_LIST : PAT COMMA PAT_LIST .  (reduce by rule 46)
+
+
+
+	.	reduce by rule 46
+
+
+state 123:
+
+	FUN_DEC : ID LPAR PAT COLON TY_EXP RPAR . COLON TY_EXP EQ EXP 
+
+	COLON	shift 134
+
+
+	.	error
+
+
+state 124:
+
+	PAT : LPAR PAT COMMA PAT_LIST RPAR .  (reduce by rule 39)
+
+
+
+	.	reduce by rule 39
+
+
+state 125:
+
+	BASIC_TY_EXP : LPAR TY_EXP_LIST RPAR ID .  (reduce by rule 24)
+
+
+
+	.	reduce by rule 24
+
+
+state 126:
+
+	TY_EXP_LIST : TY_EXP COMMA TY_EXP_LIST .  (reduce by rule 27)
+
+
+
+	.	reduce by rule 27
+
+
+state 127:
+
+	TY_EXP : TY_EXP . THIN_ARROW TY_EXP 
+	TY_EXP_LIST : TY_EXP . COMMA TY_EXP 
+	TY_EXP_LIST : TY_EXP COMMA TY_EXP .  (reduce by rule 26)
+	TY_EXP_LIST : TY_EXP . COMMA TY_EXP_LIST 
+
+	THIN_ARROW	shift 73
+	COMMA	shift 103
+
+
+	.	reduce by rule 26
+
+
+state 128:
+
+	EXP : ID LPAR EXP_LIST RPAR .  (reduce by rule 50)
+
+
+
+	.	reduce by rule 50
+
+
+state 129:
+
+	EXP_LIST : EXP COMMA . EXP_LIST 
+
+	LET	shift 63
+	CASE	shift 62
+	LPAR	shift 61
+	RAISE	shift 60
+	INT	shift 59
+	REAL	shift 58
+	ID	shift 57
+
+	EXP	goto 117
+	EXP_LIST	goto 135
+
+	.	error
+
+
+state 130:
+
+	EXP : LPAR EXP COMMA EXP_LIST . RPAR 
+
+	RPAR	shift 136
+
+
+	.	error
+
+
+state 131:
+
+	EXP : CASE EXP OF RULE_LIST .  (reduce by rule 66)
+
+
+
+	.	reduce by rule 66
+
+
+state 132:
+
+	PAT : PAT . CONS PAT 
+	RULE_LIST : PAT . ARROW EXP 
+	RULE_LIST : PAT . ARROW EXP VBAR RULE_LIST 
+
+	ARROW	shift 137
+	CONS	shift 39
+
+
+	.	error
+
+
+state 133:
+
+	EXP : EXP . SEMICOLON EXP 
+	EXP : EXP . EQ EXP 
+	EXP : EXP . LESS' EXP 
+	EXP : EXP . MUL EXP 
+	EXP : EXP . DIV EXP 
+	EXP : EXP . PLUS EXP 
+	EXP : EXP . MINUS EXP 
+	EXP : EXP . CONS EXP 
+	EXP : EXP . APPEND EXP 
+	EXP : LET FUN_DEC_LIST IN EXP . END 
+
+	END	shift 138
+	SEMICOLON	shift 86
+	EQ	shift 85
+	LESS'	shift 84
+	PLUS	shift 83
+	MUL	shift 82
+	DIV	shift 81
+	MINUS	shift 80
+	CONS	shift 79
+	APPEND	shift 78
+
+
+	.	error
+
+
+state 134:
+
+	FUN_DEC : ID LPAR PAT COLON TY_EXP RPAR COLON . TY_EXP EQ EXP 
+
+	LPAR	shift 51
+	PRIME	shift 14
+	ID	shift 50
+
+	TY_VAR	goto 49
+	TY_EXP	goto 139
+	BASIC_TY_EXP	goto 47
+	CART_PROD	goto 46
+
+	.	error
+
+
+state 135:
+
+	EXP_LIST : EXP COMMA EXP_LIST .  (reduce by rule 69)
+
+
+
+	.	reduce by rule 69
+
+
+state 136:
+
+	EXP : LPAR EXP COMMA EXP_LIST RPAR .  (reduce by rule 49)
+
+
+
+	.	reduce by rule 49
+
+
+state 137:
+
+	RULE_LIST : PAT ARROW . EXP 
+	RULE_LIST : PAT ARROW . EXP VBAR RULE_LIST 
+
+	LET	shift 63
+	CASE	shift 62
+	LPAR	shift 61
+	RAISE	shift 60
+	INT	shift 59
+	REAL	shift 58
+	ID	shift 57
+
+	EXP	goto 140
+
+	.	error
+
+
+state 138:
+
+	EXP : LET FUN_DEC_LIST IN EXP END .  (reduce by rule 67)
+
+
+
+	.	reduce by rule 67
+
+
+state 139:
+
+	FUN_DEC : ID LPAR PAT COLON TY_EXP RPAR COLON TY_EXP . EQ EXP 
+	TY_EXP : TY_EXP . THIN_ARROW TY_EXP 
+
+	THIN_ARROW	shift 73
+	EQ	shift 141
+
+
+	.	error
+
+
+state 140:
+
+	EXP : EXP . SEMICOLON EXP 
+	EXP : EXP . EQ EXP 
+	EXP : EXP . LESS' EXP 
+	EXP : EXP . MUL EXP 
+	EXP : EXP . DIV EXP 
+	EXP : EXP . PLUS EXP 
+	EXP : EXP . MINUS EXP 
+	EXP : EXP . CONS EXP 
+	EXP : EXP . APPEND EXP 
+	RULE_LIST : PAT ARROW EXP .  (reduce by rule 70)
+	RULE_LIST : PAT ARROW EXP . VBAR RULE_LIST 
+
+	VBAR	shift 142
+	EQ	shift 85
+	LESS'	shift 84
+	PLUS	shift 83
+	MUL	shift 82
+	DIV	shift 81
+	MINUS	shift 80
+	CONS	shift 79
+	APPEND	shift 78
+
+
+	.	reduce by rule 70
+
+
+state 141:
+
+	FUN_DEC : ID LPAR PAT COLON TY_EXP RPAR COLON TY_EXP EQ . EXP 
+
+	LET	shift 63
+	CASE	shift 62
+	LPAR	shift 61
+	RAISE	shift 60
+	INT	shift 59
+	REAL	shift 58
+	ID	shift 57
+
+	EXP	goto 143
+
+	.	error
+
+
+state 142:
+
+	RULE_LIST : PAT ARROW EXP VBAR . RULE_LIST 
+
+	LPAR	shift 45
+	ID	shift 31
+
+	PAT	goto 132
+	RULE_LIST	goto 144
+
+	.	error
+
+
+state 143:
+
+	EXP : EXP . SEMICOLON EXP 
+	EXP : EXP . EQ EXP 
+	EXP : EXP . LESS' EXP 
+	EXP : EXP . MUL EXP 
+	EXP : EXP . DIV EXP 
+	EXP : EXP . PLUS EXP 
+	EXP : EXP . MINUS EXP 
+	EXP : EXP . CONS EXP 
+	EXP : EXP . APPEND EXP 
+	FUN_DEC : ID LPAR PAT COLON TY_EXP RPAR COLON TY_EXP EQ EXP .  (reduce by rule 35)
+
+	SEMICOLON	shift 86
+	EQ	shift 85
+	LESS'	shift 84
+	PLUS	shift 83
+	MUL	shift 82
+	DIV	shift 81
+	MINUS	shift 80
+	CONS	shift 79
+	APPEND	shift 78
+
+
+	.	reduce by rule 35
+
+
+state 144:
+
+	RULE_LIST : PAT ARROW EXP VBAR RULE_LIST .  (reduce by rule 71)
+
+
+
+	.	reduce by rule 71
+
+
+state 145:
+
+
+	EOF	accept
+
+
+	.	error
+
+217 of 533 action table entries left after compaction
+108 goto table entries

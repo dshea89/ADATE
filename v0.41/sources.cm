@@ -1,0 +1,91 @@
+
+Group 
+is
+        lib040.sml
+        splay_lib.sml
+        heap.sml
+        eq_solve_lib.sml
+        lcs.sml
+	random_sampling.sml
+
+        constants.sml
+        cutil.sml
+        cutil.sig.sml
+        c_interface.sml
+	ast.sml
+	ML.lex
+	ML.grm
+	parse.sml
+        print.sml
+	ast_lib5.sml
+	ast_lib.sml
+        dec_cvt.sml
+	ast_lib3.sml
+	ast_lib2.sml
+        ast_lib4.sml
+        ast_lib6.sml
+	type.sml
+        make_spec.sml
+        predefined.sml
+        super_combs.sml
+        compile.sml
+        assemble_link_and_load.sml
+        execute.sml
+        evaluate_lib2.sml
+        evaluate_lib3.sml
+(*        evaluate_lib4.sml *)
+	evaluate.sml
+        monotype.sml
+        (* lm.sml *)
+        rconst.sml
+        req_lib.sml
+        mpi_interface.sml
+	synt_lib.sml
+(*
+        nn_lib.sml
+        nn.sml
+        rprop.sml
+        nn_opt.sml
+*)
+	exp_synt_lib.sml
+	exp_synt_lib2.sml
+	exp_synt.sml
+        r_lib.sml
+        (* rand_exp_synt_lib2.sml
+           rand_exp_synt.sml *)
+        abstr_lib.sml
+        abstr_lib2.sml
+        abstr.sml
+        req_lib5.sml
+        r_lib2.sml
+        r.sml
+        req_lib3.sml
+        req_lib6.sml
+        req_lib4.sml
+        req_lib2.sml
+        req.sml
+        dupl_lib1.sml
+        dupl.sml
+        multir_lib2.sml
+        multir.sml
+	case_dist_lib.sml
+	case_dist.sml
+        multir_lib2b.sml
+	compound_trf_synt_lib2.sml
+	compound_trf_synt_lib.sml
+	compound_trf_synt.sml
+        trace_chain.sml
+	genealogical_search_lib.sml
+	genealogical_search_lib2.sml
+        indis.sml
+        population.sml
+	equalizer.sml
+	genealogical_search.sml
+
+        cc-info.sig.sml
+        c-calls.sig.sml
+        cc-info.defaults.sml
+        cc-info.gcc-x86-linux.sml
+        c-calls.sml
+        Util/sources.cm
+        ml-yacc-lib/sources.cm

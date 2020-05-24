@@ -59,6 +59,10 @@ cat main1.sml SEQ01.spec.sml main2.sml > main.sml
 ./main start
 ```
 
+## Older Versions
+
+The most recent available version of ADATE is version 0.50. An older version of ADATE, version 0.41, is also made available for historical purposes. This includes the source code for the makespec binary and may be used to produce build compatile with 64-bit systems in the absence of source code for makespec in version 0.50.
+
 ## TODO
 
 * Remove the hardcoded paths so that setup is simpler and takes less time.

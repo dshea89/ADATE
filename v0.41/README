@@ -1,0 +1,28 @@
+This directory contains undocumented source code for version 041 of ADATE,
+which can run under CHIMP MPI and LINUX on an unlimited number of CPUs. It 
+is much more stable than any previous ADATE version and doesn't have known 
+bugs. However, error handling and efficiency are poor.
+
+Two sample specifications are included, namely
+
+1. sort.spec. Training inputs and evaluation function for generating
+     a variety of sorting algorithms.
+
+2. bst_del.spec. Training inputs and evaluation function for generating a 
+     program that deletes an element from a binary search tree.
+
+The files "run" and "heap" are modified versions of the run-time system
+and heap for Standard ML of New Jersey version 110. Can be started in single
+processor mode using the "sml" script. In order to start it under MPI,
+please see genealogical_search.sml and figure it out yourself.
+
+Modify the file "run.sml" in order to try an example. Then load it into
+the Standard ML of New Jersey system with 
+
+use "run.sml";
+
+Cheers,
+
+Roland Olsson (roland.olsson@hiof.no)
+
+
